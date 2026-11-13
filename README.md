@@ -12,16 +12,18 @@ Multi-language (`TR` / `PL` / `UA`) Barber Shop management PWA migrated to a **3
 
 ```text
 .
-├── app.py                # Flask entrypoint, static serving, /health, /api & REST CRUD routes
-├── db.py                 # Environment-based PostgreSQL DSN, schema init, health probe
-├── store.py              # Business logic & relational CRUD operations
-├── security.py           # Scrypt password hashing & HMAC-SHA256 token utilities
-├── public/               # Frontend PWA (HTML, CSS, JS, i18n tr/pl/uk, manifest, sw.js)
-├── requirements.txt      # Python dependencies (Flask, psycopg2-binary, python-dotenv, gunicorn)
-├── Dockerfile            # Container image definition (Python 3.12-slim, port 5000)
-├── docker-compose.yml    # One-command local 3-tier stack (Flask web + PostgreSQL 16)
-├── .env.example          # Environment variable template (safe to commit)
-└── .gitignore            # Excludes .venv, __pycache__, .env, and build artifacts
+├── .github/workflows/deploy.yml  # CI/CD: build linux/amd64 image -> GHCR -> Render Deploy Hook
+├── app.py                        # Flask entrypoint, static serving, /health, /api & REST CRUD routes
+├── db.py                         # Environment-based PostgreSQL DSN, schema init, health probe
+├── schema.sql                    # PostgreSQL relational schema (tables & indexes)
+├── store.py                      # Business logic & relational CRUD operations
+├── security.py                   # Scrypt password hashing & HMAC-SHA256 token utilities
+├── public/                       # Frontend PWA (HTML, CSS, JS, i18n tr/pl/uk, manifest, sw.js)
+├── requirements.txt              # Python dependencies (Flask, psycopg2-binary, python-dotenv, gunicorn)
+├── Dockerfile                    # Production container image (Python 3.12-slim + Gunicorn)
+├── docker-compose.yml            # One-command local 3-tier stack (Flask web + PostgreSQL 16)
+├── .env.example                  # Environment variable template (safe to commit)
+└── .gitignore                    # Excludes .venv, __pycache__, .env, and build artifacts
 ```
 
 ---
@@ -127,6 +129,25 @@ git commit -m "Initial 3-tier Flask + PostgreSQL + Docker BarberApp"
 git remote add origin https://github.com/<your-username>/<your-repo>.git
 git push -u origin main
 ```
+
+---
+
+## Render + GHCR CI/CD Deployment (Task 2 — Option 2)
+
+1. **Managed PostgreSQL on Render:**
+   - Create a PostgreSQL instance in Render.
+   - Connect from VS Code using the **External Database URL** and run `schema.sql` to initialize the tables.
+2. **Render Web Service:**
+   - Create a Web Service (**Existing Image** `ghcr.io/<owner>/<repo>:latest` or Docker), set **Auto-Deploy** to **No**, and set Health Check Path to `/health`.
+   - Configure Environment Variables on Render:
+     - `DATABASE_URL` → Render **Internal Database URL**
+     - `ADMIN_DEFAULT_PASSWORD`, `MASTER_KEY`, `APP_SECRET`
+   - Copy the **Deploy Hook** URL from Render Web Service settings.
+3. **GitHub Configuration & CI/CD:**
+   - **Settings → Actions → General → Workflow permissions:** set to **Read and write permissions**.
+   - **Settings → Secrets and variables → Actions:** add `RENDER_DEPLOY_HOOK_URL`.
+   - Ensure the published GHCR package (`Packages → barberapp → Package settings`) is **Public** (or configure registry credentials on Render).
+   - Pushing to `main` automatically runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), builds the `linux/amd64` Docker image, pushes to `ghcr.io`, and triggers the Render Deploy Hook.
 
 ---
 
