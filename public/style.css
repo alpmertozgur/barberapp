@@ -1,0 +1,1770 @@
+/* ==========================================================================
+   BERBER TAKİP SİSTEMİ - PWA STİL DOSYASI (STYLE.CSS)
+   Lüks, Karanlık ve Altın Temalı Mobil Öncelikli Tasarım
+   ========================================================================== */
+
+/* Google Fonts - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   1. CSS DEĞİŞKENLERİ (VARIABLES)
+   ========================================================================== */
+:root {
+  --bg-primary: #0a0a0f;          /* Derin siyah/karanlık ana arka plan */
+  --bg-secondary: #14141f;        /* Kart ve panel arka planları */
+  --bg-tertiary: #1e1e2e;         /* Yükseltilmiş / interaktif elemanlar */
+  --bg-glass: rgba(20, 20, 31, 0.85); /* Buzlu cam (glassmorphism) */
+  --gold-primary: #d4a54a;        /* Birincil altın vurgusu */
+  --gold-light: #e8c675;          /* Açık altın */
+  --gold-dark: #b8862e;           /* Koyu altın */
+  --gold-gradient: linear-gradient(135deg, #d4a54a, #e8c675);
+  --text-primary: #f0f0f5;        /* Beyaz/açık metin */
+  --text-secondary: #8888a0;      /* İkincil / soluk metin */
+  --text-gold: #d4a54a;           /* Altın metin */
+  --green: #34d399;               /* Nakit / kazanç / başarı yeşili */
+  --blue: #60a5fa;                /* Kart / bilgi mavisi */
+  --red: #f87171;                 /* Masraf / tehlike kırmızısı */
+  --border: rgba(255, 255, 255, 0.06); /* İnce sınır çizgisi */
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   2. TEMEL VE SIFIRLAMA STİLLERİ (BASE & RESET)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Giriş elemanlarında metin seçimine izin ver */
+input, textarea, select {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* İnce ve karanlık kaydırma çubuğu (Scrollbar) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-dark);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-tertiary) var(--bg-primary);
+}
+
+/* ==========================================================================
+   3. EKRAN SİSTEMİ (SCREEN SYSTEM)
+   ========================================================================== */
+.screen {
+  display: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: 100px; /* Sabit alt menü için boşluk */
+  opacity: 0;
+  transform: translateY(10px);
+  position: relative;
+  width: 100%;
+}
+
+.screen.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   4. BAŞLIK VE ÜST ÇUBUK (HEADER)
+   ========================================================================== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 10px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+  position: relative;
+  z-index: 10;
+}
+
+.header-back {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: none;
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.header-back:hover,
+.header-back:focus-visible {
+  background: var(--bg-glass);
+  color: var(--gold-primary);
+  border: 1px solid var(--border);
+}
+
+.header-back:active {
+  transform: scale(0.92);
+}
+
+.header-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  text-align: center;
+  flex: 1;
+  margin: 0 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-action {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: none;
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.header-action:hover,
+.header-action:focus-visible {
+  background: var(--bg-glass);
+  color: var(--gold-primary);
+  border: 1px solid var(--border);
+}
+
+.header-action:active {
+  transform: scale(0.92);
+}
+
+/* ==========================================================================
+   5. İSTATİSTİK KARTLARI (STAT CARDS)
+   ========================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 10px 20px;
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 18px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  filter: blur(20px);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.stat-card.gold::after {
+  background: radial-gradient(circle, rgba(212, 165, 74, 0.35) 0%, transparent 70%);
+}
+
+.stat-card.green::after {
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.35) 0%, transparent 70%);
+}
+
+.stat-card.blue::after {
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.35) 0%, transparent 70%);
+}
+
+.stat-card.red::after {
+  background: radial-gradient(circle, rgba(248, 113, 113, 0.35) 0%, transparent 70%);
+}
+
+.stat-card.full-width {
+  grid-column: span 2;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+  line-height: 1;
+  display: block;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.stat-card.gold .stat-value {
+  color: var(--gold-light);
+}
+
+.stat-card.green .stat-value {
+  color: var(--green);
+}
+
+.stat-card.blue .stat-value {
+  color: var(--blue);
+}
+
+.stat-card.red .stat-value {
+  color: var(--red);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   6. BERBER SEÇİM IZGARASI (BARBER GRID - GİRİŞ EKRANI)
+   ========================================================================== */
+.barber-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 20px;
+}
+
+.barber-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 24px 16px;
+  text-align: center;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 130px;
+}
+
+.barber-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-primary);
+  box-shadow: 0 8px 32px rgba(212, 165, 74, 0.15);
+}
+
+.barber-card:active {
+  transform: scale(0.97);
+}
+
+.barber-avatar {
+  font-size: 3rem;
+  margin-bottom: 8px;
+  display: block;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.barber-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.barber-card.add-new {
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  background: transparent;
+}
+
+.barber-card.add-new:hover {
+  border-color: var(--gold-primary);
+  background: rgba(212, 165, 74, 0.04);
+}
+
+.barber-card.add-new .barber-avatar {
+  opacity: 0.4;
+  transition: var(--transition);
+}
+
+.barber-card.add-new:hover .barber-avatar {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   7. BUTONLAR (BUTTONS)
+   ========================================================================== */
+.btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  text-decoration: none;
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--gold-gradient);
+  color: #0a0a0f; /* Altın zemin üzerine koyu kontrast yazı */
+  box-shadow: 0 4px 16px rgba(212, 165, 74, 0.3);
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 24px rgba(212, 165, 74, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(212, 165, 74, 0.3);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-glass);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-danger {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--red);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+.btn-danger:hover {
+  background: rgba(248, 113, 113, 0.25);
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.btn-sm {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  width: auto;
+  min-height: 38px;
+}
+
+.btn-admin {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+.btn-admin:hover {
+  color: var(--text-primary);
+  border-color: var(--gold-primary);
+  background: var(--bg-tertiary);
+}
+
+/* ==========================================================================
+   8. HIZLI İŞLEM BUTONU (QUICK ACTION BUTTON)
+   ========================================================================== */
+.quick-action {
+  margin: 15px 20px;
+}
+
+.quick-action .btn {
+  font-size: 1.1rem;
+  padding: 18px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* ==========================================================================
+   9. ÖDEME YÖNTEMİ SEÇİCİ (PAYMENT TOGGLE)
+   ========================================================================== */
+.payment-toggle {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.payment-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  outline: none;
+}
+
+.payment-btn:active {
+  transform: scale(0.98);
+}
+
+.payment-btn.active.cash {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(52, 211, 153, 0.1);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.1);
+}
+
+.payment-btn.active.card {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: rgba(96, 165, 250, 0.1);
+  box-shadow: 0 0 20px rgba(96, 165, 250, 0.1);
+}
+
+/* ==========================================================================
+   10. TUTAR GİRİŞİ (AMOUNT INPUT)
+   ========================================================================== */
+.amount-input-container {
+  text-align: center;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.amount-currency {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+
+.amount-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  font-family: inherit;
+  caret-color: var(--gold-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  padding: 4px 0;
+}
+
+.amount-input::placeholder {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.amount-preview {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.amount-preview span {
+  color: var(--gold-primary);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   11. FORM ELEMANLARI (FORM ELEMENTS)
+   ========================================================================== */
+.form-group {
+  padding: 0 20px;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+  min-height: 48px;
+}
+
+.form-input:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 3px rgba(212, 165, 74, 0.1);
+  background: var(--bg-tertiary);
+}
+
+.form-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.4;
+}
+
+.form-select {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 44px 14px 16px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+  min-height: 48px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238888a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 3px rgba(212, 165, 74, 0.1);
+  background-color: var(--bg-tertiary);
+}
+
+.form-select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   12. HİZMET VE İŞLEM LİSTESİ (SERVICE / TRANSACTION LIST)
+   ========================================================================== */
+.section-title {
+  padding: 20px 20px 10px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.service-list,
+.expense-list {
+  padding: 0 20px;
+  list-style: none;
+}
+
+.service-item,
+.expense-item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+  position: relative;
+}
+
+.service-item:active,
+.expense-item:active {
+  background: var(--bg-tertiary);
+}
+
+.service-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.service-icon.cash {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--green);
+}
+
+.service-icon.card {
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--blue);
+}
+
+.service-icon.expense {
+  background: rgba(248, 113, 113, 0.12);
+  color: var(--red);
+}
+
+.service-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.service-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.service-meta {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.service-share {
+  text-align: right;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.service-share-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gold-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.service-share-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+/* Silme Butonu - Mobil uyumlu, tıklanabilir dokunma hedefi */
+.service-delete {
+  opacity: 0.85;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 8px;
+  background: rgba(248, 113, 113, 0.1);
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+  outline: none;
+}
+
+.service-delete:hover,
+.service-delete:focus-visible {
+  opacity: 1;
+  background: rgba(248, 113, 113, 0.25);
+  transform: scale(1.05);
+}
+
+.service-delete:active {
+  transform: scale(0.92);
+}
+
+/* Masaüstü fare ile gezinirken varsayılan gizlenip kart üzerine gelindiğinde gösterilebilir */
+@media (hover: hover) {
+  .service-item .service-delete,
+  .expense-item .service-delete {
+    opacity: 0;
+  }
+
+  .service-item:hover .service-delete,
+  .expense-item:hover .service-delete,
+  .service-delete:focus-visible {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   13. TARİH FİLTRESİ (DATE FILTER)
+   ========================================================================== */
+.date-filter {
+  display: flex;
+  gap: 6px;
+  padding: 10px 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.date-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.date-filter-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.date-filter-btn:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+.date-filter-btn.active {
+  background: var(--gold-primary);
+  color: #0a0a0f;
+  border-color: var(--gold-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(212, 165, 74, 0.25);
+}
+
+/* ==========================================================================
+   14. BERBER PERFORMANS LİSTESİ (ADMIN PANEL)
+   ========================================================================== */
+.barber-perf-list {
+  padding: 0 20px;
+  list-style: none;
+}
+
+.barber-perf-item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.barber-perf-item:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.barber-perf-avatar {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.barber-perf-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.barber-perf-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barber-perf-count {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.barber-perf-amount {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: right;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.barber-perf-salary {
+  font-size: 0.78rem;
+  color: var(--gold-primary);
+  text-align: right;
+  font-weight: 600;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   15. MODAL VE AÇILIR PENCERE (MODAL SYSTEM)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--bg-secondary);
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 500px;
+  padding: 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 24px);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 85vh;
+  overflow-y: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+/* ==========================================================================
+   16. ALT GEZİNME ÇUBUĞU (BOTTOM NAVIGATION)
+   ========================================================================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+  padding-bottom: calc(env(safe-area-inset-bottom, 8px) + 8px);
+  display: flex;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  min-height: 48px;
+  outline: none;
+}
+
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+.nav-item.active {
+  color: var(--gold-primary);
+}
+
+.nav-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  display: block;
+}
+
+.nav-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.nav-item.active .nav-label {
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   17. GİRİŞ EKRANI ÖZEL STİLLERİ (LOGIN SCREEN SPECIFIC)
+   ========================================================================== */
+.login-header {
+  text-align: center;
+  padding: 60px 20px 30px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 60px);
+}
+
+.login-logo {
+  font-size: 4rem;
+  margin-bottom: 12px;
+  display: inline-block;
+  line-height: 1;
+  filter: drop-shadow(0 6px 16px rgba(212, 165, 74, 0.25));
+  animation: pulse 3s infinite ease-in-out;
+}
+
+.login-title {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.login-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 6px;
+  font-weight: 400;
+}
+
+.login-form {
+  padding: 10px 0;
+  animation: slideUp 0.5s ease;
+}
+
+.login-form .form-group {
+  margin-bottom: 14px;
+}
+
+.login-form .form-input {
+  font-size: 1.05rem;
+  padding: 16px;
+}
+
+.admin-login-section {
+  padding: 20px;
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   18. KATEGORİ SEÇİMİ (CATEGORY SELECT)
+   ========================================================================== */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.category-btn {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.category-btn:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+.category-btn:active {
+  transform: scale(0.97);
+}
+
+.category-btn.active {
+  border-color: var(--gold-primary);
+  color: var(--gold-primary);
+  background: rgba(212, 165, 74, 0.08);
+  box-shadow: 0 0 16px rgba(212, 165, 74, 0.1);
+}
+
+/* ==========================================================================
+   19. BİLDİRİM VE TOAST (TOAST NOTIFICATION)
+   ========================================================================== */
+.toast {
+  position: fixed;
+  top: 20px;
+  top: calc(env(safe-area-inset-top, 0px) + 20px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 2000;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 90%;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  pointer-events: all;
+}
+
+.toast.success {
+  border-left: 3px solid var(--green);
+}
+
+.toast.error {
+  border-left: 3px solid var(--red);
+}
+
+/* ==========================================================================
+   20. BOŞ DURUM (EMPTY STATE)
+   ========================================================================== */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  opacity: 0.4;
+  line-height: 1;
+}
+
+.empty-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   21. ROZETLER (BADGE)
+   ========================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.badge-cash {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--green);
+}
+
+.badge-card {
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--blue);
+}
+
+/* ==========================================================================
+   22. YARDIMCI SINIFLAR (UTILITY CLASSES)
+   ========================================================================== */
+.p-20 {
+  padding: 0 20px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-gold {
+  color: var(--gold-primary);
+}
+
+.text-green {
+  color: var(--green);
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px;
+}
+
+/* ==========================================================================
+   23. ANİMASYONLAR (ANIMATIONS)
+   ========================================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade {
+  animation: fadeIn 0.3s ease;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease;
+}
+
+/* ==========================================================================
+   24. DUYARLI TASARIM (RESPONSIVE DESIGN)
+   ========================================================================== */
+@media (min-width: 500px) {
+  body {
+    display: flex;
+    justify-content: center;
+    background-color: #050508; /* Masaüstü için hafif daha koyu dış fon */
+  }
+
+  .screen {
+    max-width: 500px;
+    margin: 0 auto;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background-color: var(--bg-primary);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .bottom-nav {
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .modal-overlay {
+    align-items: center;
+  }
+
+  .modal {
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(40px) scale(0.95);
+    margin-bottom: 0;
+  }
+
+  .modal-overlay.active .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .toast {
+    max-width: 460px;
+  }
+}
+
+/* ==========================================================================
+   DİL SEÇİCİ (LANGUAGE SWITCH)
+   ========================================================================== */
+.lang-switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top, 0px) + 16px) 20px 0;
+}
+
+.lang-switch.in-modal {
+  padding: 0 20px 16px;
+}
+
+.lang-btn {
+  flex: 0 1 auto;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.lang-btn.active {
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+  background: rgba(212, 165, 74, 0.12);
+}
+
+/* ==========================================================================
+   YÜKLENİYOR GÖSTERGESİ (LOADING)
+   ========================================================================== */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.loading-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid rgba(212, 165, 74, 0.25);
+  border-top-color: var(--gold-primary);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.barber-perf-item .service-delete {
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   ŞİFRE GÖSTER/GİZLE & ŞİFREMİ UNUTTUM (PASSWORD TOGGLE & LINK BTN)
+   ========================================================================== */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper .form-input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.password-toggle:hover,
+.password-toggle.active {
+  color: var(--gold-light);
+  background: rgba(212, 165, 74, 0.12);
+}
+
+.btn-link {
+  background: transparent;
+  border: none;
+  color: var(--gold-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 10px;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   TAKVİM GEZİNME BARI (CALENDAR BAR)
+   ========================================================================== */
+.calendar-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 20px 10px;
+}
+
+.calendar-nav-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.calendar-nav-btn:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+
+.calendar-nav-btn:active {
+  transform: scale(0.94);
+}
+
+.calendar-picker-wrap {
+  position: relative;
+  flex: 1;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.calendar-picker-wrap:hover {
+  border-color: var(--gold-primary);
+}
+
+.calendar-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   PDF RAPOR BUTONLARI (PDF REPORT GRID)
+   ========================================================================== */
+.pdf-report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.pdf-report-grid .btn-sm {
+  padding: 10px 6px;
+  font-size: 0.8rem;
+  min-height: 42px;
+}
+
+/* ==========================================================================
+   YENİ ÖZELLİKLER: BAHŞİŞ, MAAŞ ÖDEMESİ, DÜZENLEME & FİLTRELEME
+   ========================================================================== */
+.section-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 20px 20px 10px;
+}
+
+.section-title-row .section-title {
+  padding: 0;
+}
+
+.section-hint {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.barber-perf-item {
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+
+.barber-perf-item.active-filter {
+  border-color: var(--gold-primary);
+  background: rgba(212, 165, 74, 0.1);
+  box-shadow: 0 0 18px rgba(212, 165, 74, 0.18);
+}
+
+.barber-perf-remaining {
+  font-size: 0.75rem;
+  color: var(--green);
+  text-align: right;
+  font-weight: 600;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.barber-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.service-edit {
+  opacity: 0.9;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 8px;
+  background: rgba(212, 165, 74, 0.12);
+  border: 1px solid rgba(212, 165, 74, 0.25);
+  color: var(--gold-light);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+  outline: none;
+}
+
+.service-edit:hover,
+.service-edit:focus-visible {
+  opacity: 1;
+  background: rgba(212, 165, 74, 0.25);
+  transform: scale(1.05);
+}
+
+.service-edit:active {
+  transform: scale(0.92);
+}
+
+.tip-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(52, 211, 153, 0.14);
+  color: var(--green);
+  vertical-align: middle;
+}
+
+.service-icon.payout {
+  background: rgba(212, 165, 74, 0.15);
+  color: var(--gold-light);
+}
+
+.filter-banner {
+  margin: 12px 20px 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(212, 165, 74, 0.12);
+  border: 1px solid rgba(212, 165, 74, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+
+.btn-clear-filter {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-clear-filter:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+
+/* ==========================================================================
+   DÜZENLİ AYARLAR MODALI KARTLARI (ORGANIZED SETTINGS CARDS)
+   ========================================================================== */
+.settings-modal {
+  padding: 20px 18px calc(env(safe-area-inset-bottom, 16px) + 22px);
+}
+
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-card {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.settings-card-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-sublabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: -4px;
+}
+
+.settings-card .lang-switch.in-modal {
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.settings-card .lang-switch.in-modal .lang-btn {
+  width: 100%;
+  padding: 10px 8px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.settings-card-btn {
+  margin-top: 2px;
+}
+
+.settings-close-btn {
+  margin-top: 16px;
+}

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BarberApp">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="description" content="BarberApp">
+  <title>BarberApp</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loading" class="loading-overlay"><div class="spinner"></div></div>
+
+  <!-- ========== SCREEN: LOGIN ========== -->
+  <div id="screen-login" class="screen active">
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+      <button class="lang-btn" data-lang="pl">🇵🇱 PL</button>
+      <button class="lang-btn" data-lang="uk">🇺🇦 UA</button>
+    </div>
+
+    <div class="login-header">
+      <span class="login-logo">💈</span>
+      <h1 class="login-title">BarberApp</h1>
+      <p class="login-subtitle" data-i18n="appSubtitle"></p>
+    </div>
+
+    <div class="login-form">
+      <div class="form-group">
+        <label class="form-label" data-i18n="username"></label>
+        <input type="text" class="form-input" id="login-username" data-i18n-ph="usernamePh" autocomplete="username" autocapitalize="off" autocorrect="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="password"></label>
+        <div class="password-wrapper">
+          <input type="password" class="form-input" id="login-password" data-i18n-ph="passwordPh" autocomplete="current-password">
+          <button type="button" class="password-toggle" data-target="login-password" data-i18n-title="showPassword">👁️</button>
+        </div>
+      </div>
+      <div class="p-20" style="margin-top: 10px;">
+        <button class="btn btn-primary" id="btn-login" data-i18n="login"></button>
+        <button class="btn btn-secondary" id="btn-show-admin-register" style="margin-top: 10px;" data-i18n="showAdminRegister"></button>
+        <button class="btn btn-link" id="btn-show-forgot-password" style="margin-top: 8px;" data-i18n="forgotPasswordBtn"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: BARBER DASHBOARD ========== -->
+  <div id="screen-barber" class="screen">
+    <div class="header">
+      <button class="header-back" id="barber-back" data-i18n-title="logout">⎋</button>
+      <h2 class="header-title" id="barber-header-name">—</h2>
+      <button class="header-action" id="barber-history-btn">📋</button>
+    </div>
+
+    <div class="date-filter" id="barber-date-filter">
+      <button class="date-filter-btn active" data-period="today" data-i18n="today"></button>
+      <button class="date-filter-btn" data-period="week" data-i18n="week"></button>
+      <button class="date-filter-btn" data-period="month" data-i18n="month"></button>
+      <button class="date-filter-btn" data-period="year" data-i18n="year"></button>
+      <button class="date-filter-btn" data-period="all" data-i18n="all"></button>
+    </div>
+
+    <div class="calendar-bar">
+      <button type="button" class="calendar-nav-btn" id="barber-prev-day" data-i18n-title="prevDay">◀</button>
+      <label class="calendar-picker-wrap">
+        <span class="calendar-icon">📅</span>
+        <span class="calendar-label" id="barber-calendar-label"></span>
+        <input type="date" class="calendar-input" id="barber-calendar-input">
+      </label>
+      <button type="button" class="calendar-nav-btn" id="barber-next-day" data-i18n-title="nextDay">▶</button>
+    </div>
+
+    <div class="stats-grid" id="barber-stats">
+      <div class="stat-card gold">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value" id="barber-total">0 zł</div>
+        <div class="stat-label" data-i18n="barberTotal"></div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">🤑</div>
+        <div class="stat-value" id="barber-share">0 zł</div>
+        <div class="stat-label" id="barber-share-label" data-i18n="myShare"></div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">💵</div>
+        <div class="stat-value" id="barber-cash">0 zł</div>
+        <div class="stat-label" data-i18n="cash"></div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-icon">💳</div>
+        <div class="stat-value" id="barber-card">0 zł</div>
+        <div class="stat-label" data-i18n="card"></div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">🏦</div>
+        <div class="stat-value" id="barber-remaining">0 zł</div>
+        <div class="stat-label" data-i18n="remainingSalary"></div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">💝</div>
+        <div class="stat-value" id="barber-tips">0 zł</div>
+        <div class="stat-label" data-i18n="tipsLabel"></div>
+      </div>
+    </div>
+
+    <div class="quick-action">
+      <button class="btn btn-primary" id="btn-add-service" data-i18n="addService"></button>
+      <button class="btn btn-secondary" id="btn-add-supply" style="margin-top: 10px;" data-i18n="addSupplyExpense"></button>
+    </div>
+
+    <div class="section-title" data-i18n="recentRecords"></div>
+    <div class="service-list" id="barber-services"></div>
+  </div>
+
+  <!-- ========== SCREEN: ADD SERVICE ========== -->
+  <div id="screen-add-service" class="screen">
+    <div class="header">
+      <button class="header-back" id="service-back">←</button>
+      <h2 class="header-title" id="service-screen-title" data-i18n="newService"></h2>
+      <div style="width:44px"></div>
+    </div>
+
+    <div class="amount-input-container">
+      <div class="amount-currency">zł</div>
+      <input type="number" class="amount-input" id="service-amount" placeholder="0" inputmode="decimal" autocomplete="off">
+      <div class="amount-preview"><span data-i18n="yourShare"></span> <span id="service-share-preview">0 zł</span></div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" data-i18n="paymentMethod"></label>
+    </div>
+    <div class="payment-toggle">
+      <button class="payment-btn cash active" id="pay-cash" data-i18n="cashBtn"></button>
+      <button class="payment-btn card" id="pay-card" data-i18n="cardBtn"></button>
+    </div>
+
+    <div class="form-group" style="margin-top: 20px;">
+      <label class="form-label" data-i18n="tipInputLabel"></label>
+      <input type="number" class="form-input" id="service-tip" placeholder="0" inputmode="decimal" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" data-i18n="noteOptional"></label>
+      <input type="text" class="form-input" id="service-note" data-i18n-ph="notePh">
+    </div>
+
+    <div class="p-20" style="margin-top: 20px;">
+      <button class="btn btn-primary" id="btn-save-service" data-i18n="save"></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: ADMIN DASHBOARD ========== -->
+  <div id="screen-admin" class="screen">
+    <div class="header">
+      <button class="header-back" id="admin-back" data-i18n-title="logout">⎋</button>
+      <h2 class="header-title" id="admin-header-title" data-i18n="adminPanel"></h2>
+      <button class="header-action" id="admin-settings-btn">⚙️</button>
+    </div>
+
+    <div class="date-filter" id="admin-date-filter">
+      <button class="date-filter-btn active" data-period="today" data-i18n="today"></button>
+      <button class="date-filter-btn" data-period="week" data-i18n="week"></button>
+      <button class="date-filter-btn" data-period="month" data-i18n="month"></button>
+      <button class="date-filter-btn" data-period="year" data-i18n="year"></button>
+      <button class="date-filter-btn" data-period="all" data-i18n="all"></button>
+    </div>
+
+    <div class="calendar-bar">
+      <button type="button" class="calendar-nav-btn" id="admin-prev-day" data-i18n-title="prevDay">◀</button>
+      <label class="calendar-picker-wrap">
+        <span class="calendar-icon">📅</span>
+        <span class="calendar-label" id="admin-calendar-label"></span>
+        <input type="date" class="calendar-input" id="admin-calendar-input">
+      </label>
+      <button type="button" class="calendar-nav-btn" id="admin-next-day" data-i18n-title="nextDay">▶</button>
+    </div>
+
+    <div class="stats-grid" id="admin-stats">
+      <div class="stat-card gold full-width">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value" id="admin-revenue">0 zł</div>
+        <div class="stat-label" data-i18n="totalIncome"></div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">💵</div>
+        <div class="stat-value" id="admin-cash">0 zł</div>
+        <div class="stat-label" data-i18n="cash"></div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-icon">💳</div>
+        <div class="stat-value" id="admin-card">0 zł</div>
+        <div class="stat-label" data-i18n="card"></div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">📤</div>
+        <div class="stat-value" id="admin-expenses">0 zł</div>
+        <div class="stat-label" data-i18n="expenses"></div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="admin-salaries">0 zł</div>
+        <div class="stat-label" data-i18n="salaries"></div>
+      </div>
+      <div class="stat-card green full-width">
+        <div class="stat-icon">🏦</div>
+        <div class="stat-value" id="admin-net-cash">0 zł</div>
+        <div class="stat-label" data-i18n="netCashBox"></div>
+      </div>
+      <div class="stat-card green full-width">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value" id="admin-profit">0 zł</div>
+        <div class="stat-label" data-i18n="netProfit"></div>
+      </div>
+    </div>
+
+    <div class="quick-action">
+      <button class="btn btn-secondary" id="btn-add-payout" style="border-color: rgba(52,211,153,0.35); color: var(--green); background: rgba(52,211,153,0.1);" data-i18n="addPayoutBtn"></button>
+      <button class="btn btn-danger" id="btn-add-expense" style="margin-top: 10px; background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.25);" data-i18n="addExpense"></button>
+    </div>
+
+    <div class="section-title-row">
+      <div class="section-title" data-i18n="barberPerf"></div>
+      <span class="section-hint" data-i18n="tapToFilterHint"></span>
+    </div>
+    <div class="barber-perf-list" id="admin-barber-perf"></div>
+
+    <div class="filter-banner" id="admin-filter-banner" style="display: none;">
+      <span id="admin-filter-text"></span>
+      <button type="button" class="btn-clear-filter" id="btn-clear-barber-filter" data-i18n="clearFilter"></button>
+    </div>
+
+    <div class="section-title" data-i18n="recentTx"></div>
+    <div class="service-list" id="admin-transactions"></div>
+  </div>
+
+  <!-- ========== SCREEN: ADD EXPENSE ========== -->
+  <div id="screen-add-expense" class="screen">
+    <div class="header">
+      <button class="header-back" id="expense-back">←</button>
+      <h2 class="header-title" id="expense-header-title" data-i18n="expenseTitle"></h2>
+      <div style="width:44px"></div>
+    </div>
+
+    <div id="expense-category-section">
+      <div class="form-group">
+        <label class="form-label" data-i18n="category"></label>
+      </div>
+      <div class="category-grid" id="expense-categories">
+        <button class="category-btn active" data-category="rent" data-i18n="cat_rent"></button>
+        <button class="category-btn" data-category="supplies" data-i18n="cat_supplies"></button>
+        <button class="category-btn" data-category="bills" data-i18n="cat_bills"></button>
+        <button class="category-btn" data-category="maintenance" data-i18n="cat_maintenance"></button>
+        <button class="category-btn" data-category="food" data-i18n="cat_food"></button>
+        <button class="category-btn" data-category="other" data-i18n="cat_other"></button>
+      </div>
+    </div>
+
+    <div class="amount-input-container">
+      <div class="amount-currency">zł</div>
+      <input type="number" class="amount-input" id="expense-amount" placeholder="0" inputmode="decimal">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" data-i18n="description"></label>
+      <input type="text" class="form-input" id="expense-description" data-i18n-ph="descriptionPh">
+    </div>
+
+    <div class="p-20" style="margin-top: 20px;">
+      <button class="btn btn-primary" id="btn-save-expense" data-i18n="save"></button>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Admin / Shop Register ========== -->
+  <div class="modal-overlay" id="modal-admin-register">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" data-i18n="adminRegisterTitle"></h3>
+      <div class="form-group">
+        <label class="form-label" data-i18n="shopName"></label>
+        <input type="text" class="form-input" id="admin-reg-shop" data-i18n-ph="shopNamePh">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="username"></label>
+        <input type="text" class="form-input" id="admin-reg-username" data-i18n-ph="regUsernamePh" autocapitalize="off" autocorrect="off" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="password"></label>
+        <input type="password" class="form-input" id="admin-reg-password" data-i18n-ph="regPasswordPh" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="masterKey"></label>
+        <input type="password" class="form-input" id="admin-reg-master-key" data-i18n-ph="masterKeyPh" autocomplete="off">
+      </div>
+      <div class="p-20" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="btn-submit-admin-register" data-i18n="registerBtn"></button>
+        <button class="btn btn-secondary" id="btn-cancel-admin-register" style="margin-top: 8px;" data-i18n="cancel"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Register / Edit (Employee - Admin Only) ========== -->
+  <div class="modal-overlay" id="modal-register">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" id="register-modal-title" data-i18n="registerTitle"></h3>
+      <div class="form-group">
+        <label class="form-label" data-i18n="name"></label>
+        <input type="text" class="form-input" id="register-name" data-i18n-ph="namePh">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="username"></label>
+        <input type="text" class="form-input" id="register-username" data-i18n-ph="regUsernamePh" autocapitalize="off" autocorrect="off" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="commissionRateLabel"></label>
+        <input type="number" class="form-input" id="register-commission" value="50" min="0" max="100" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="password"></label>
+        <div class="password-wrapper">
+          <input type="password" class="form-input" id="register-password" data-i18n-ph="regPasswordPh" autocomplete="new-password">
+          <button type="button" class="password-toggle" data-target="register-password" data-i18n-title="showPassword">👁️</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="chooseAvatar"></label>
+      </div>
+      <div class="category-grid" id="register-avatar-grid" style="padding: 0 20px;">
+        <button class="category-btn avatar-btn active" data-avatar="💇‍♂️">💇‍♂️</button>
+        <button class="category-btn avatar-btn" data-avatar="✂️">✂️</button>
+        <button class="category-btn avatar-btn" data-avatar="💈">💈</button>
+        <button class="category-btn avatar-btn" data-avatar="🧔">🧔</button>
+        <button class="category-btn avatar-btn" data-avatar="👨‍🦱">👨‍🦱</button>
+        <button class="category-btn avatar-btn" data-avatar="🪒">🪒</button>
+      </div>
+      <div class="p-20" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="btn-submit-register" data-i18n="save"></button>
+        <button class="btn btn-secondary" id="btn-cancel-register" style="margin-top: 8px;" data-i18n="cancel"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Salary / Advance Payout (Admin Only) ========== -->
+  <div class="modal-overlay" id="modal-payout">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" data-i18n="payoutModalTitle"></h3>
+      <div class="form-group">
+        <label class="form-label" data-i18n="selectBarberLabel"></label>
+        <select class="form-select" id="payout-barber"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="pdfAmountCol"></label>
+        <input type="number" class="form-input" id="payout-amount" placeholder="0" inputmode="decimal" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="paymentMethod"></label>
+      </div>
+      <div class="payment-toggle">
+        <button type="button" class="payment-btn cash active" id="payout-pay-cash" data-i18n="cashBtn"></button>
+        <button type="button" class="payment-btn card" id="payout-pay-card" data-i18n="cardBtn"></button>
+      </div>
+      <div class="form-group" style="margin-top: 16px;">
+        <label class="form-label" data-i18n="noteOptional"></label>
+        <input type="text" class="form-input" id="payout-note" data-i18n-ph="payoutNotePh">
+      </div>
+      <div class="p-20" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="btn-submit-payout" data-i18n="save"></button>
+        <button class="btn btn-secondary" id="btn-cancel-payout" style="margin-top: 8px;" data-i18n="cancel"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Forgot Password ========== -->
+  <div class="modal-overlay" id="modal-forgot-password">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" data-i18n="forgotPasswordTitle"></h3>
+      <div class="form-group">
+        <label class="form-label" data-i18n="username"></label>
+        <input type="text" class="form-input" id="forgot-username" data-i18n-ph="usernamePh" autocapitalize="off" autocorrect="off" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="masterKey"></label>
+        <input type="password" class="form-input" id="forgot-master-key" data-i18n-ph="masterKeyPh" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="newPasswordPh"></label>
+        <div class="password-wrapper">
+          <input type="password" class="form-input" id="forgot-new-password" data-i18n-ph="newPasswordPh" autocomplete="new-password">
+          <button type="button" class="password-toggle" data-target="forgot-new-password" data-i18n-title="showPassword">👁️</button>
+        </div>
+      </div>
+      <div class="p-20" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="btn-submit-forgot" data-i18n="resetPasswordBtn"></button>
+        <button class="btn btn-secondary" id="btn-cancel-forgot" style="margin-top: 8px;" data-i18n="cancel"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Settings ========== -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal settings-modal">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" data-i18n="settings"></h3>
+
+      <div class="settings-sections">
+        <!-- 1. Çalışan Yönetimi -->
+        <div class="settings-card">
+          <div class="settings-card-title" data-i18n="settingsStaffSection"></div>
+          <button type="button" class="btn btn-primary" id="btn-admin-add-barber" data-i18n="addBarberBtn"></button>
+        </div>
+
+        <!-- 2. Dil Seçimi -->
+        <div class="settings-card">
+          <div class="settings-card-title" data-i18n="settingsLanguageSection"></div>
+          <div class="lang-switch in-modal">
+            <button type="button" class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+            <button type="button" class="lang-btn" data-lang="pl">🇵🇱 PL</button>
+            <button type="button" class="lang-btn" data-lang="uk">🇺🇦 UA</button>
+          </div>
+        </div>
+
+        <!-- 3. PDF Rapor İndir -->
+        <div class="settings-card">
+          <div class="settings-card-title" data-i18n="pdfReportsSection"></div>
+          <label class="settings-sublabel" data-i18n="reportDateLabel"></label>
+          <input type="date" class="form-input" id="report-date-input">
+          <div class="pdf-report-grid">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-pdf-daily" data-i18n="pdfDailyBtn"></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-pdf-monthly" data-i18n="pdfMonthlyBtn"></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-pdf-yearly" data-i18n="pdfYearlyBtn"></button>
+          </div>
+        </div>
+
+        <!-- 4. Yönetici Şifresi Değiştirme -->
+        <div class="settings-card">
+          <div class="settings-card-title" data-i18n="settingsSecuritySection"></div>
+          <div class="password-wrapper">
+            <input type="password" class="form-input" id="settings-new-password" data-i18n-ph="newPasswordPh" autocomplete="new-password">
+            <button type="button" class="password-toggle" data-target="settings-new-password" data-i18n-title="showPassword">👁️</button>
+          </div>
+          <button type="button" class="btn btn-primary settings-card-btn" id="btn-save-password" data-i18n="updatePassword"></button>
+        </div>
+
+        <!-- 5. Veri Yedekleme -->
+        <div class="settings-card">
+          <div class="settings-card-title" data-i18n="settingsBackupSection"></div>
+          <button type="button" class="btn btn-secondary" id="btn-export-data" data-i18n="exportData"></button>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-secondary settings-close-btn" id="btn-close-settings" data-i18n="close"></button>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Confirm Delete ========== -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" id="confirm-title" data-i18n="confirmTitle"></h3>
+      <p class="text-center text-muted" id="confirm-message" style="padding: 0 20px; margin-bottom: 20px;" data-i18n="confirmMsg"></p>
+      <div class="p-20">
+        <button class="btn btn-danger" id="btn-confirm-yes" data-i18n="delete"></button>
+        <button class="btn btn-secondary" id="btn-confirm-no" style="margin-top: 8px;" data-i18n="cancel"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
